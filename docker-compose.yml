@@ -1,15 +1,23 @@
 version: '3'
 services:
   app:
-    container_name: docker-node-mongo
+    container_name: node-mongo
     restart: always
     build: .
     ports:
-      - '80:3000'
+      - '3000:3000'
     links:
-      - mongo
-  mongo:
+      - db
+  db:
     container_name: mongo
     image: mongo
+    volumes: ./db:/data/db
     ports:
       - '27017:27017'
+  web:
+    container_name: nginx
+    image: nginx:1.15
+    ports:
+      - '80:80'
+    volumes:
+      - ./html:/usr/share/nginx/html
